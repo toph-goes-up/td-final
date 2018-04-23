@@ -97,11 +97,11 @@ let Creep = function(texture, width, height, spec){
 let NormalCreep = function(pos){
     let  creep = Creep('assets/textures/creep/creep-1-blue/sheet.png', 25, 25, normalCreepSpec);
     creep.pos = pos;
-    creep.health = 80;
+    creep.health = 100;
     creep.speed = .06;
     creep.target = {x: App.management.canvas.width - pos.x, y: App.management.canvas.height - pos.y};
     creep.rotation = toolkit.computeDirection(creep.pos, creep.target);
-    creep.bounty = 2;
+    creep.bounty = 1;
     creep.updatePath();
 
     return creep;
@@ -110,7 +110,7 @@ let NormalCreep = function(pos){
 let HeavyCreep = function(pos){
     let  creep = Creep('assets/textures/creep/creep-3-red/sheet.png', 25, 25, heavyCreepSpec);
     creep.pos = pos;
-    creep.health = 400;
+    creep.health = 800;
     creep.speed = 0.02;
     creep.target = {x: App.management.canvas.width - pos.x, y: App.management.canvas.height - pos.y};
     creep.rotation = toolkit.computeDirection(creep.pos, creep.target);

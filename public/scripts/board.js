@@ -46,22 +46,25 @@ App.board = (function(graphics, canvas, info){
             placeTower(tower, false);
             if(this.shortestPath({x: canvas.width/2, y: 0}, {x: canvas.width/2, y: canvas.height-1}) === -1 ||
                 this.shortestPath({x: 0, y: canvas.height/2}, {x: canvas.width-1, y: canvas.height/2}) === -1){
-                deleteTower(tower);
+                deleteTower(tower, true);
                 return false;
             }
             else{
-                deleteTower(tower);
+                deleteTower(tower, true);
             }
         }
 
         return true;
     };
 
-    this.deleteTower = function(tower){
+    this.deleteTower = function(tower, placeTest = false){
         let pos = tower.pos;
         let cellSize = canvas.width/nGridCells;
         let x = pos.x / cellSize;
         let y = pos.y / cellSize;
+
+        if(!placeTest)
+            tower.destroyed = true;
 
         // c is the southeast square in the tower
         let c = grid[x][y];
@@ -95,6 +98,7 @@ App.board = (function(graphics, canvas, info){
         if(x >= 0 && x < grid.length && y >= 0 && y < grid.length){
             App.controller.selected = grid[x][y].tower;
         }
+        else App.controller.selected = null;
     };
 
     this.shortestPath = function(sPos, tPos){

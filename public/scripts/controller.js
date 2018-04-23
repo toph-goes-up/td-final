@@ -5,19 +5,39 @@
      let that = {
          mousePos: {x: 0, y:0},
          heldTower: null,
-         cash: 100,
+         cash: 50,
          lives: 15,
          selected: null
      };
+     let gridSize = App.management.canvas.width/nGridCells;
+
      let livesDisp = document.getElementById('game-lives');
      let cashDisp = document.getElementById('game-cash');
+
      let towerInfoDisp = {
-         type: document.getElementById('game-tower-type')
+         type: document.getElementById('game-tower-type'),
+         damage: document.getElementById('game-tower-damage'),
+         rate: document.getElementById('game-tower-rate'),
+         sell: document.getElementById('btn-game-tower-sell')
+     };
+
+     that.newGame = function(){
+         that.cash = 50;
+         that.lives = 15;
+         that.selected = null;
+         that.heldTower = null;
      };
 
      that.grabTower = function(t){
          that.heldTower = towers[t]();
          that.heldTower.showRange = true;
+     };
+
+     that.sellTower = function(){
+         t = that.selected;
+        App.board.deleteTower(t);
+        that.cash += Math.floor(0.8*t.price);
+        that.selected = null;
      };
 
      that.placeTower = function(){
@@ -37,7 +57,6 @@
         }
      };
 
-     let gridSize = App.management.canvas.width/nGridCells;
 
      that.render = function(){
         if(that.heldTower){
@@ -52,9 +71,21 @@
         }
         livesDisp.innerHTML = '<3: ' + that.lives;
         cashDisp.innerHTML = '$: ' + that.cash;
+
         if(that.selected) {
-            console.log(that.selected);
             towerInfoDisp.type.innerHTML = that.selected.type;
+            towerInfoDisp.damage.innerHTML = 'Damage: ' + that.selected.damage;
+            towerInfoDisp.rate.innerHTML = 'Rate: ' + Math.floor(1 / (that.selected.rate / 1000));
+            towerInfoDisp.sell.innerHTML = 'Sell for $' + Math.floor(that.selected.price * 0.8);
+            towerInfoDisp.sell.disabled = false;
+        }
+
+        else{
+            towerInfoDisp.type.innerHTML = ' ';
+            towerInfoDisp.damage.innerHTML = ' ';
+            towerInfoDisp.rate.innerHTML = ' ';
+            towerInfoDisp.sell.innerHTML = 'Sell';
+            towerInfoDisp.sell.disabled = true;
         }
      };
 

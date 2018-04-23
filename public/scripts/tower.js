@@ -131,7 +131,7 @@ laserTower = function(){
     let that = parentTower('assets/textures/turrets/turret-5-1.png', 'assets/textures/bluebullet.png');
     that.range = 80;
     that.rate = 30;
-    that.damage = 0.5;
+    that.damage = 0.8;
     that.price = 15;
     that.type = 'Laser Tower';
     return that;
@@ -141,4 +141,4 @@ let towers = {
     'Laser Tower': laserTower,
     'Slug Tower': slugTower,
     'Gun Tower': gunTower
-}
+};

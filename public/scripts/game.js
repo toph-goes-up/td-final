@@ -75,6 +75,7 @@ App.screens['game'] = (function(manager, keyboard, mouse, collision, info, contr
         document.getElementById('btn-game-gun-tower').addEventListener('click', e => {controller.grabTower('Gun Tower')});
         document.getElementById('btn-game-slug-tower').addEventListener('click', e => {controller.grabTower('Slug Tower')});
         document.getElementById('btn-game-laser-tower').addEventListener('click', e => {controller.grabTower('Laser Tower')});
+        document.getElementById('btn-game-tower-sell').addEventListener('click', e => {controller.sellTower()});
         document.getElementById('btn-game-start-level').addEventListener('click', e => {App.level.startLevel()});
     }
 
