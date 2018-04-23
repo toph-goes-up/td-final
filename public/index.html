@@ -1,0 +1,75 @@
+<html>
+<head>
+    <title>Bad Thoughts Tower Defense</title>
+
+    <link rel="stylesheet" type="text/css" href="styles/style.css" />
+    <script defer src="https://use.fontawesome.com/releases/v5.0.9/js/all.js" integrity="sha384-8iPTk2s/jMVj81dnzb/iFR2sdA7u06vHJyyLlAd4snFpCl/SnyUjRrbdJsw1pGIl" crossorigin="anonymous"></script>
+</head>
+<body onload="App.management.init();">
+<div id="app">
+    <div id="main-menu" class="screen">
+        <h1>Some Awful Game</h1>
+        <ul id="menu">
+            <li><button id="btn-new-game">New Game</button></li>
+            <li><button id="btn-high-scores">High Scores</button></li>
+            <li><button id="btn-about">About</button></li>
+        </ul>
+    </div>
+    <div id="game" class="screen">
+        <div id="game-bg" ></div>
+        <ul id="game-menu">
+            <li><label id="game-lives"></label></li>
+            <li><label id="game-cash"></label></li>
+            <li><button id="btn-game-start-level">GO!</button></li>
+            <li><button id="btn-game-gun-tower"><img src="assets/textures/turrets/turret-1-1.png"/></button></li>
+            <li><button id="btn-game-laser-tower"><img src="assets/textures/turrets/turret-5-1.png"></button></li>
+            <li><button id="btn-game-slug-tower"><img src="assets/textures/turrets/turret-7-1.png"/></button></li>
+        </ul>
+        <canvas id="game-canvas" width="500" height="500"></canvas>
+        <ul id="tower-info">
+            <li><label id="game-tower-type"></label></li>
+        </ul>
+    </div>
+    <div id="high-scores" class="screen">
+        <div class="btn-back" id="hs-back"><span class="fas fa-chevron-left fa-2x"></span></div>
+        <div id="scoreboard">
+            <h2>High Scores:</h2>
+            <ol>
+                <li>Tophski: 1000000</li>
+                <li>Tophski: 900000</li>
+                <li>Tophski: 8000000</li>
+                <li>Tophski: 7000000</li>
+            </ol>
+        </div>
+    </div>
+    <div id="about" class="screen">
+        <div class="btn-back" id="about-back"><span class="fas fa-chevron-left fa-2x"></span></div>
+            <h2>About:</h2>
+    </div>
+</div>
+
+<script>
+    let App = {
+        screens: {}
+    };
+</script>
+<script src="scripts/settings.js"></script>
+<script src="scripts/toolkit.js"></script>
+<script src="scripts/emitter.js"></script>
+<script src="scripts/management.js"></script>
+<script src="scripts/graphics.js"></script>
+<script src="scripts/main-menu.js"></script>
+<script src="scripts/about.js"></script>
+<script src="scripts/high-scores.js"></script>
+<script src="scripts/input.js"></script>
+<script src="scripts/collision.js"></script>
+<script src="scripts/creep.js"></script>
+<script src="scripts/board.js"></script>
+<script src="scripts/projectile.js"></script>
+<script src="scripts/tower.js"></script>
+<script src="scripts/controller.js"></script>
+<script src="scripts/game.js"></script>
+<script src="scripts/level.js"></script>
+<script src="scripts/actor.js"></script>
+</body>
+</html>
