@@ -68,6 +68,9 @@ App.screens['game'] = (function(manager, keyboard, mouse, collision, info, contr
 
     function init(){
         keyboard.registerCommand(KeyEvent.DOM_VK_A, true, dTime => {info.showGrid = ! info.showGrid});
+        keyboard.registerCommand(KeyEvent.DOM_VK_U, true, dTime => {controller.upgradeTower()});
+        keyboard.registerCommand(KeyEvent.DOM_VK_S, true, dTime => {controller.sellTower()});
+        keyboard.registerCommand(KeyEvent.DOM_VK_G, true, dTime => {App.level.startLevel()});
         mouse.registerCommand('mousemove', e => {controller.mousePos = manager.getMousePos(e)});
         mouse.registerCommand('mousedown', controller.placeTower);
         mouse.registerCommand('mousedown', e => {App.board.selectTower(controller.mousePos)});
@@ -75,7 +78,9 @@ App.screens['game'] = (function(manager, keyboard, mouse, collision, info, contr
         document.getElementById('btn-game-gun-tower').addEventListener('click', e => {controller.grabTower('Gun Tower')});
         document.getElementById('btn-game-slug-tower').addEventListener('click', e => {controller.grabTower('Slug Tower')});
         document.getElementById('btn-game-laser-tower').addEventListener('click', e => {controller.grabTower('Laser Tower')});
+        document.getElementById('btn-game-blast-tower').addEventListener('click', e => {controller.grabTower('Blast Tower')});
         document.getElementById('btn-game-tower-sell').addEventListener('click', e => {controller.sellTower()});
+        document.getElementById('btn-game-tower-upgrade').addEventListener('click', e => {controller.upgradeTower()});
         document.getElementById('btn-game-start-level').addEventListener('click', e => {App.level.startLevel()});
     }
 
@@ -84,21 +89,6 @@ App.screens['game'] = (function(manager, keyboard, mouse, collision, info, contr
 
         things.push(App.board);
         things.push(controller);
-
-        /*
-
-        */
-
-        //particleEmitters.push(emitter(aEmitterSpec, manager.ctx));
-
-        //keyboard.registerCommand(KeyEvent.DOM_VK_RIGHT, false, function(){a.rotation += .2});
-        //keyboard.registerCommand(KeyEvent.DOM_VK_LEFT, false, function(){a.rotation -= .2});
-        //a.collide = function(){console.log('COLLIDE!')};
-        //a.col = {width: 20, height: 20};
-
-        //things.push(a);
-        //things.push(Actor('assets/textures/creep/creep-1-blue/sheet.png', 25, 25, creepSpec));
-
 
         prevTime = performance.now();
         requestAnimationFrame(gameLoop);

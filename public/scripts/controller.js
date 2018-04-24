@@ -18,7 +18,8 @@
          type: document.getElementById('game-tower-type'),
          damage: document.getElementById('game-tower-damage'),
          rate: document.getElementById('game-tower-rate'),
-         sell: document.getElementById('btn-game-tower-sell')
+         sell: document.getElementById('btn-game-tower-sell'),
+         upgrade: document.getElementById('btn-game-tower-upgrade')
      };
 
      that.newGame = function(){
@@ -30,14 +31,23 @@
 
      that.grabTower = function(t){
          that.heldTower = towers[t]();
-         that.heldTower.showRange = true;
      };
 
      that.sellTower = function(){
-         t = that.selected;
-        App.board.deleteTower(t);
-        that.cash += Math.floor(0.8*t.price);
-        that.selected = null;
+         let t = that.selected;
+         App.board.deleteTower(t);
+         that.cash += Math.floor(0.8*t.price);
+         that.selected = null;
+     };
+
+     that.upgradeTower = function(){
+         if(that.selected && that.selected.level < 2){
+             let cost = Math.floor(that.selected.price * 0.7);
+             if(cost <= that.cash){
+                 that.cash -= cost;
+                 that.selected.upgrade();
+             }
+         }
      };
 
      that.placeTower = function(){
@@ -48,7 +58,6 @@
                 that.heldTower.active = true;
                 that.cash -= that.heldTower.price;
 
-                that.heldTower.showRange = false;
                 that.grabTower(that.heldTower.type);
             }
             else{
@@ -73,24 +82,29 @@
         cashDisp.innerHTML = '$: ' + that.cash;
 
         if(that.selected) {
+            that.selected.showRange();
             towerInfoDisp.type.innerHTML = that.selected.type;
-            towerInfoDisp.damage.innerHTML = 'Damage: ' + that.selected.damage;
+            towerInfoDisp.damage.innerHTML = 'Damage: ' + Math.floor(that.selected.damage);
             towerInfoDisp.rate.innerHTML = 'Rate: ' + Math.floor(1 / (that.selected.rate / 1000));
-            towerInfoDisp.sell.innerHTML = 'Sell for $' + Math.floor(that.selected.price * 0.8);
+            towerInfoDisp.sell.innerHTML = 'Sell: $' + Math.floor(that.selected.price * 0.8);
+            towerInfoDisp.upgrade.innerHTML = 'Upgrade: $' + Math.floor(that.selected.price * .7);
+            towerInfoDisp.upgrade.disabled = !(that.cash >= Math.floor(that.selected.price * .7)) && that.selected.level < 2;
             towerInfoDisp.sell.disabled = false;
         }
 
         else{
-            towerInfoDisp.type.innerHTML = ' ';
-            towerInfoDisp.damage.innerHTML = ' ';
-            towerInfoDisp.rate.innerHTML = ' ';
+            towerInfoDisp.type.innerHTML = '&nbsp</br>';
+            towerInfoDisp.damage.innerHTML = '&nbsp';
+            towerInfoDisp.rate.innerHTML = '&nbsp';
             towerInfoDisp.sell.innerHTML = 'Sell';
+            towerInfoDisp.upgrade.disabled = true;
             towerInfoDisp.sell.disabled = true;
         }
      };
 
      that.update = function(){
          if(that.heldTower){
+             that.selected = that.heldTower;
              that.heldTower.pos = snapToBlock(that.mousePos);
          }
      };

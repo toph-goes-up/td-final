@@ -12,14 +12,19 @@ App.level = (function(game){
     let eTime = 0;
     let pauseTime = 0;
 
+    let levelDisp = document.getElementById('game-level');
+    let waveDisp = document.getElementById('game-wave');
+
 
     let creepCounts = {
         NormalCreep: 0,
+        FlyingCreep: 0,
         HeavyCreep: 0
     };
 
     let levelSpecs = {
         1: {
+            mult: 1,
             rate: 700,
             waves:[
                 {
@@ -55,15 +60,77 @@ App.level = (function(game){
             ]
         },
         2: {
-            rate: 400,
-            NormalCreep: 35,
-            HeavyCreep: 5
+            mult: 1.8,
+            rate: 550,
+            waves:[
+                {
+                    NormalCreep: 15,
+                    HeavyCreep: 5,
+                    FlyingCreep: 0
+                },
+                {
+                    NormalCreep: 25,
+                    HeavyCreep: 0,
+                    FlyingCreep: 0
+                },
+                {
+                    NormalCreep: 0,
+                    HeavyCreep: 2,
+                    FlyingCreep: 10
+                },
+                {
+                    NormalCreep: 20,
+                    HeavyCreep: 5,
+                    FlyingCreep: 10
+                },
+                {
+                    NormalCreep: 45,
+                    HeavyCreep: 15,
+                    FlyingCreep: 0
+                },
+                {
+                    NormalCreep: 0,
+                    HeavyCreep: 20,
+                    FlyingCreep: 20
+                },
+            ]
         },
         3: {
-            rate: 300,
-            NormalCreep: 100,
-            HeavyCreep: 15
-        }
+            mult: 3.0,
+            rate: 400,
+            waves:[
+                {
+                    NormalCreep: 40,
+                    HeavyCreep: 0,
+                    FlyingCreep: 0
+                },
+                {
+                    NormalCreep: 10,
+                    HeavyCreep: 15,
+                    FlyingCreep: 0
+                },
+                {
+                    NormalCreep: 0,
+                    HeavyCreep: 0,
+                    FlyingCreep: 30
+                },
+                {
+                    NormalCreep: 45,
+                    HeavyCreep: 15,
+                    FlyingCreep: 10
+                },
+                {
+                    NormalCreep: 45,
+                    HeavyCreep: 15,
+                    FlyingCreep: 30
+                },
+                {
+                    NormalCreep: 200,
+                    HeavyCreep: 200,
+                    FlyingCreep: 100
+                },
+            ]
+        },
     };
 
     that.startLevel = function(){
@@ -71,7 +138,6 @@ App.level = (function(game){
             level++;
             wave = -1;
             nextWave();
-            console.log(creepCounts);
 
             that.active = true;
         }
@@ -80,26 +146,28 @@ App.level = (function(game){
     let nextWave = function(){
         wave++;
         creepCounts.NormalCreep += levelSpecs[level].waves[wave].NormalCreep;
-        //creepCounts.FlyingCreep += levelSpecs[level].FlyingCreep;
+        creepCounts.FlyingCreep += levelSpecs[level].waves[wave].FlyingCreep;
         creepCounts.HeavyCreep += levelSpecs[level].waves[wave].HeavyCreep;
     };
 
-    that.render = function(dTime){};
+    that.render = function(dTime){
+        levelDisp.innerHTML = 'Level: ' + level;
+        waveDisp.innerHTML = 'Wave: ' + (wave+1);
+    };
 
     that.update = function(dTime){
         if(that.active) {
             // Update the elapsed time
             eTime += dTime;
-            console.log(dTime);
 
             //Check if its time to spawn a new creep
-            if (eTime > levelSpecs[level].rate * (1 - wave/8)) {
+            if (eTime > levelSpecs[level].rate/* - 50*wave */) {
 
                 // Choose a random creep to spawn from the pool.
                 let chooseCreep = toolkit.uniform(0,3);
                 let spawnType = null;
                 if(chooseCreep > 2 && creepCounts.HeavyCreep > 0) spawnType = 'HeavyCreep';
-                //else if(chooseCreep > 1 && creepCounts.FlyingCreep != 0) spawnType = FlyingCreep;
+                else if(chooseCreep > 1 && creepCounts.FlyingCreep > 0) spawnType = 'FlyingCreep';
                 else if(creepCounts.NormalCreep > 0) spawnType = 'NormalCreep';
 
                 //if we chose a creep successfully, spawn it and reset the spawn timer.
@@ -133,6 +201,7 @@ App.level = (function(game){
 
     function spawnCreep(type, pos){
         let creep = type(pos);
+        creep.health = Math.floor(levelSpecs[level].mult*creep.health);
         game.actors.push(creep);
         game.creeps.push(creep);
     };

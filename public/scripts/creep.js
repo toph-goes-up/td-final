@@ -97,7 +97,7 @@ let Creep = function(texture, width, height, spec){
 let NormalCreep = function(pos){
     let  creep = Creep('assets/textures/creep/creep-1-blue/sheet.png', 25, 25, normalCreepSpec);
     creep.pos = pos;
-    creep.health = 100;
+    creep.health = 90;
     creep.speed = .06;
     creep.target = {x: App.management.canvas.width - pos.x, y: App.management.canvas.height - pos.y};
     creep.rotation = toolkit.computeDirection(creep.pos, creep.target);
@@ -108,7 +108,7 @@ let NormalCreep = function(pos){
 };
 
 let HeavyCreep = function(pos){
-    let  creep = Creep('assets/textures/creep/creep-3-red/sheet.png', 25, 25, heavyCreepSpec);
+    let  creep = Creep('assets/textures/creep/creep-3-red/sheet.png', 35, 35, heavyCreepSpec);
     creep.pos = pos;
     creep.health = 800;
     creep.speed = 0.02;
@@ -120,9 +120,28 @@ let HeavyCreep = function(pos){
     return creep;
 };
 
+let FlyingCreep = function(pos){
+    let  creep = Creep('assets/textures/creep/creep-2-yellow/sheet.png', 25, 25, flyingCreepSpec);
+    creep.pos = pos;
+    creep.health = 120;
+    creep.speed = 0.04;
+    creep.target = {x: App.management.canvas.width - pos.x, y: App.management.canvas.height - pos.y};
+    creep.rotation = toolkit.computeDirection(creep.pos, creep.target);
+    creep.bounty =  4;
+
+    creep.updatePath = function(){
+        creep.path = App.board.shortestPath(creep.target, creep.target);
+    };
+
+    creep.updatePath();
+
+    return creep;
+};
+
 let Creeps = {
     NormalCreep: NormalCreep,
-    HeavyCreep: HeavyCreep
+    HeavyCreep: HeavyCreep,
+    FlyingCreep: FlyingCreep
 };
 
 let deathSpec = function(pos) {
@@ -151,4 +170,10 @@ let heavyCreepSpec = {
     spriteCount: 4,
     size: {width: 46, height: 46},
     timing: [1000, 200, 200, 200]
+};
+
+let flyingCreepSpec = {
+    spriteCount: 4,
+    size: {width: 46, height: 46},
+    timing: [200, 1000, 200, 600]
 };

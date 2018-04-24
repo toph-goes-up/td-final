@@ -85,6 +85,5 @@ function emitter(spec) {
     };
 
     App.screens.game.particleEmitters.push(that);
-    console.log(App.screens.game.particleEmitters);
     return that;
 }

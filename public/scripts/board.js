@@ -63,14 +63,18 @@ App.board = (function(graphics, canvas, info){
         let x = pos.x / cellSize;
         let y = pos.y / cellSize;
 
-        if(!placeTest)
-            tower.destroyed = true;
-
         // c is the southeast square in the tower
         let c = grid[x][y];
 
         // Link to the tower in all affected squares
         c.tower = c.n.tower = c.n.w.tower = c.w.tower = null;
+
+        if(!placeTest) {
+            tower.destroyed = true;
+            for (let i = 0; i < App.screens.game.creeps.length; i++) {
+                App.screens.game.creeps[i].updatePath();
+            }
+        }
     };
 
     this.placeTower = function(tower, updateCreeps = true){
@@ -98,7 +102,6 @@ App.board = (function(graphics, canvas, info){
         if(x >= 0 && x < grid.length && y >= 0 && y < grid.length){
             App.controller.selected = grid[x][y].tower;
         }
-        else App.controller.selected = null;
     };
 
     this.shortestPath = function(sPos, tPos){

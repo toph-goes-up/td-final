@@ -11,25 +11,30 @@ function Projectile(damage, x, y, target, img){
         image: img,
         speed: 5,
         damage: damage,
+        target: target,
         destroyed: false
     };
 
     that.update = function(dTime){
-        let theta = toolkit.computeDirection(that.pos, target.pos);
+        let theta = toolkit.computeDirection(that.pos, that.target.pos);
         let dir = {x: Math.cos(theta), y: Math.sin(theta)};
 
         // Move in the direction specified by dir
         that.pos.x += dir.x*that.speed;
         that.pos.y += dir.y*that.speed;
 
-        if(!target || target.destroyed){
+        if(!that.target || that.target.destroyed){
             that.destroyed = true;
         }
 
-        else if(toolkit.distance(that.pos, target.pos) < target.width ){
-            that.destroyed = true;
-            target.damage(that.damage);
+        else if(toolkit.distance(that.pos, that.target.pos) < that.target.width){
+            that.collide();
         }
+    };
+
+    that.collide = function() {
+        that.destroyed = true;
+        that.target.damage(that.damage);
     };
 
     that.render = function(dTime){
