@@ -93,8 +93,8 @@
             towerInfoDisp.type.innerHTML = that.selected.type;
             towerInfoDisp.damage.innerHTML = 'Damage: ' + Math.floor(that.selected.damage);
             towerInfoDisp.rate.innerHTML = 'Rate: ' + Math.floor(1 / (that.selected.rate / 1000));
-            towerInfoDisp.sell.innerHTML = 'Sell: $' + Math.floor(that.selected.price * 0.8);
-            towerInfoDisp.upgrade.innerHTML = 'Upgrade: $' + Math.floor(that.selected.price * .7);
+            towerInfoDisp.sell.innerHTML = '(s) Sell: $' + Math.floor(that.selected.price * 0.8);
+            towerInfoDisp.upgrade.innerHTML = '(u) Upgrade: $' + Math.floor(that.selected.price * .7);
             towerInfoDisp.upgrade.disabled = !(that.cash >= Math.floor(that.selected.price * .7)) && that.selected.level < 2;
             towerInfoDisp.sell.disabled = false;
         }

@@ -1,7 +1,7 @@
 #app{
     margin: 0 auto;
     display: flex;
-    width: 750px;
+    width: 800px;
     height: 500px;
     justify-content: center;
     background-color: antiquewhite;
@@ -42,18 +42,26 @@ h1{
     display: flex;
     position: absolute;
     width: 80px;
-    left: -100px;
+    left: -110px;
     flex-direction: column;
     list-style: none;
+}
+
+#game-menu *{
+    margin-bottom: 5px;
 }
 
 #tower-info{
     display: flex;
     position: absolute;
-    width: 80px;
-    right: -100px;
+    width: 150px;
+    right: -150px;
     flex-direction: column;
     list-style: none;
+}
+
+#tower info *{
+    margin-bottom: 5px;
 }
 
 #game-bg{
