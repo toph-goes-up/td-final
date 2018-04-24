@@ -96,7 +96,7 @@ App.level = (function(game){
             ]
         },
         3: {
-            mult: 3.0,
+            mult: 2.5,
             rate: 400,
             waves:[
                 {
@@ -202,6 +202,7 @@ App.level = (function(game){
     function spawnCreep(type, pos){
         let creep = type(pos);
         creep.health = Math.floor(levelSpecs[level].mult*creep.health);
+        creep.score = Math.floor(levelSpecs[level].mult*creep.score);
         game.actors.push(creep);
         game.creeps.push(creep);
     };

@@ -7,6 +7,7 @@ App.screens['game'] = (function(manager, keyboard, mouse, collision, info, contr
     let particleEmitters = [];
     let things = [];
     let creeps = [];
+    let loss = false;
 
     function processInput(dTime){
         keyboard.processInput(dTime);
@@ -14,30 +15,38 @@ App.screens['game'] = (function(manager, keyboard, mouse, collision, info, contr
     }
 
     function update(dTime){
-        let i = 0;
-        let j = 0;
-        while(i < things.length){
-            things[i].update(dTime);
-            if(!things[i].destroyed){
-                things[j++] = things[i];
+        if(!loss) {
+            let i = 0;
+            let j = 0;
+            while (i < things.length) {
+                things[i].update(dTime);
+                if (!things[i].destroyed) {
+                    things[j++] = things[i];
+                }
+                i++;
             }
-            i++;
-        }
-        things.length = j;
+            things.length = j;
 
-        i = 0;
-        j = 0;
-        let keptEmitters = [];
-        while(i < particleEmitters.length){
-            particleEmitters[i].update(dTime);
-            if(!particleEmitters[i].destroyed){
-                particleEmitters[j++] = particleEmitters[i];
+            i = 0;
+            j = 0;
+            let keptEmitters = [];
+            while (i < particleEmitters.length) {
+                particleEmitters[i].update(dTime);
+                if (!particleEmitters[i].destroyed) {
+                    particleEmitters[j++] = particleEmitters[i];
+                }
+                i++;
             }
-            i++;
+            particleEmitters.length = j;
+
+            // Filter things list for things with a collision box and check them for collisions.
+            //collision(things.filter(actor => actor.col));
+
+            // Check for game over.
+            if(App.controller.lives <= 0){
+                loss = true;
+            }
         }
-        particleEmitters.length = j;
-        // Filter things list for things with a collision box and check them for collisions.
-        //collision(things.filter(actor => actor.col));
     }
 
     function render(dTime){
@@ -47,6 +56,17 @@ App.screens['game'] = (function(manager, keyboard, mouse, collision, info, contr
         }
         for(let i = 0; i < particleEmitters.length; i++){
             particleEmitters[i].render(dTime);
+        }
+
+        if(loss) {
+            let ctx = manager.ctx;
+            ctx.font = '60px Monospace';
+            ctx.fontWeight = 1000;
+            ctx.fillStyle = 'red';
+            ctx.strokeStyle = 'black';
+            ctx.textAlign = 'center';
+            ctx.fillText('GAME OVER!', 250, 250);
+            ctx.strokeText('GAME OVER!', 250, 250);
         }
     }
 
@@ -71,6 +91,7 @@ App.screens['game'] = (function(manager, keyboard, mouse, collision, info, contr
         keyboard.registerCommand(KeyEvent.DOM_VK_U, true, dTime => {controller.upgradeTower()});
         keyboard.registerCommand(KeyEvent.DOM_VK_S, true, dTime => {controller.sellTower()});
         keyboard.registerCommand(KeyEvent.DOM_VK_G, true, dTime => {App.level.startLevel()});
+        keyboard.registerCommand(KeyEvent.DOM_VK_ESCAPE, true, dTime => {App.controller.heldTower = null; App.controller.selected = null;});
         mouse.registerCommand('mousemove', e => {controller.mousePos = manager.getMousePos(e)});
         mouse.registerCommand('mousedown', controller.placeTower);
         mouse.registerCommand('mousedown', e => {App.board.selectTower(controller.mousePos)});
@@ -82,6 +103,7 @@ App.screens['game'] = (function(manager, keyboard, mouse, collision, info, contr
         document.getElementById('btn-game-tower-sell').addEventListener('click', e => {controller.sellTower()});
         document.getElementById('btn-game-tower-upgrade').addEventListener('click', e => {controller.upgradeTower()});
         document.getElementById('btn-game-start-level').addEventListener('click', e => {App.level.startLevel()});
+        document.getElementById('btn-game-show-grid').addEventListener('click', e => {info.showGrid = !info.showGrid});
     }
 
     function run(){

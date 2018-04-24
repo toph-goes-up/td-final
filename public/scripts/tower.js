@@ -136,7 +136,7 @@ gunTower = function(){
     that.range = 100;
     that.rate = 250;
     that.damage = 2.5;
-    that.price = 5;
+    that.price = 10;
     that.type = 'Gun Tower';
     that.levelUp = function(){
         that.damage += 1;
@@ -152,7 +152,7 @@ slugTower = function(){
     that.range = 250;
     that.rate = 800;
     that.damage = 60;
-    that.price = 20;
+    that.price = 40;
     that.type = 'Slug Tower';
     that.levelUp = function(){
         that.damage += 10;
@@ -166,7 +166,7 @@ laserTower = function(){
     that.range = 80;
     that.rate = 25;
     that.damage = 1.2;
-    that.price = 15;
+    that.price = 30;
     that.type = 'Laser Tower';
     that.levelUp = function(){
         that.damage += .2;
@@ -180,7 +180,7 @@ blastTower = function(){
     that.range = 120;
     that.rate = 1000;
     that.damage = 20;
-    that.price = 40;
+    that.price = 80;
     that.blastRadius = 50;
     that.type = 'Blast Tower';
     that.levelUp = function(){
@@ -191,6 +191,7 @@ blastTower = function(){
 
     that.fire = function(){
         let p = Projectile(that.damage, that.pos.x, that.pos.y, that.target, that.proj);
+        emitter(trailSpec(p));
         p.speed = 3;
         p.width = 10;
         p.height = 10;
@@ -206,7 +207,7 @@ blastTower = function(){
                     }
                 }
             }
-            emitter(deathSpec(p.pos));
+            emitter(blastSpec(p.pos));
             p.destroyed = true;
         };
 
@@ -214,6 +215,38 @@ blastTower = function(){
     };
 
     return that;
+};
+
+let blastSpec = function(pos) {
+    return {
+        anchor: null,
+        lifetime: 80,
+        density: 550,
+        pos: pos,
+        shape: {width: 5, height: 5},
+        speed: {mean: .4, sd: .2},
+        accel: {mean: 0.5, sd: 0},
+        size: {mean: 5, sd: .2},
+        particleLifetime: {mean: 100, sd: 100},
+        fill: 'rgba(255, 0, 0, .5)',
+        texture: 'assets/textures/blast.png'
+    }
+};
+
+let trailSpec = function(p) {
+    return {
+        anchor: p,
+        lifetime: 500,
+        density: 2,
+        pos: p.pos,
+        shape: {width: 5, height: 5},
+        speed: {mean: .1, sd: .2},
+        accel: {mean: 0.5, sd: 0},
+        size: {mean: 5, sd: .2},
+        particleLifetime: {mean: 100, sd: 100},
+        fill: 'rgba(255, 0, 0, .5)',
+        texture: 'assets/textures/blast.png'
+    }
 };
 
 let towers = {

@@ -15,6 +15,7 @@ let Creep = function(texture, width, height, spec){
         path: null,
         stepPos: null,
         destroyed: false,
+        score: 0,
         health: 10,
         damageTaken: 0,
         bounty: 0
@@ -31,6 +32,8 @@ let Creep = function(texture, width, height, spec){
         if(that.health <= that.damageTaken){
             that.destroyed = true;
             emitter(deathSpec(that.pos));
+            FloatingScore(that.score, that.pos);
+            App.controller.score += that.score;
             App.controller.cash += that.bounty;
         }
     };
@@ -99,9 +102,10 @@ let NormalCreep = function(pos){
     creep.pos = pos;
     creep.health = 90;
     creep.speed = .06;
+    creep.score = 10;
     creep.target = {x: App.management.canvas.width - pos.x, y: App.management.canvas.height - pos.y};
     creep.rotation = toolkit.computeDirection(creep.pos, creep.target);
-    creep.bounty = 1;
+    creep.bounty = 3;
     creep.updatePath();
 
     return creep;
@@ -110,11 +114,12 @@ let NormalCreep = function(pos){
 let HeavyCreep = function(pos){
     let  creep = Creep('assets/textures/creep/creep-3-red/sheet.png', 35, 35, heavyCreepSpec);
     creep.pos = pos;
-    creep.health = 800;
+    creep.health = 900;
     creep.speed = 0.02;
+    creep.score = 100;
     creep.target = {x: App.management.canvas.width - pos.x, y: App.management.canvas.height - pos.y};
     creep.rotation = toolkit.computeDirection(creep.pos, creep.target);
-    creep.bounty =  8;
+    creep.bounty =  10;
     creep.updatePath();
 
     return creep;
@@ -123,11 +128,12 @@ let HeavyCreep = function(pos){
 let FlyingCreep = function(pos){
     let  creep = Creep('assets/textures/creep/creep-2-yellow/sheet.png', 25, 25, flyingCreepSpec);
     creep.pos = pos;
-    creep.health = 120;
+    creep.health = 100;
     creep.speed = 0.04;
+    creep.score = 60;
     creep.target = {x: App.management.canvas.width - pos.x, y: App.management.canvas.height - pos.y};
     creep.rotation = toolkit.computeDirection(creep.pos, creep.target);
-    creep.bounty =  4;
+    creep.bounty =  6;
 
     creep.updatePath = function(){
         creep.path = App.board.shortestPath(creep.target, creep.target);

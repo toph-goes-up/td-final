@@ -1,6 +1,6 @@
 <html>
 <head>
-    <title>Bad Thoughts Tower Defense</title>
+    <title>Tophski TD</title>
 
     <link rel="stylesheet" type="text/css" href="styles/style.css" />
     <script defer src="https://use.fontawesome.com/releases/v5.0.9/js/all.js" integrity="sha384-8iPTk2s/jMVj81dnzb/iFR2sdA7u06vHJyyLlAd4snFpCl/SnyUjRrbdJsw1pGIl" crossorigin="anonymous"></script>
@@ -8,7 +8,7 @@
 <body onload="App.management.init();">
 <div id="app">
     <div id="main-menu" class="screen">
-        <h1>Some Awful Game</h1>
+        <h1>Tophski TD</h1>
         <ul id="menu">
             <li><button id="btn-new-game">New Game</button></li>
             <li><button id="btn-high-scores">High Scores</button></li>
@@ -20,13 +20,15 @@
         <ul id="game-menu">
             <li><label id="game-lives"></label></li>
             <li><label id="game-cash"></label></li>
+            <li><label id="game-score"></label></li>
             <li><label id="game-level"></label></li>
             <li><label id="game-wave"></label></li>
             <li><button id="btn-game-start-level">GO!</button></li>
-            <li><button id="btn-game-gun-tower"><img src="assets/textures/turrets/turret-1-1.png"/>&nbsp5</button></li>
-            <li><button id="btn-game-laser-tower"><img src="assets/textures/turrets/turret-5-1.png">&nbsp15</button></li>
-            <li><button id="btn-game-slug-tower"><img src="assets/textures/turrets/turret-7-1.png"/>&nbsp20</button></li>
-            <li><button id="btn-game-blast-tower"><img src="assets/textures/turrets/turret-3-1.png"/>&nbsp40</button></li>
+            <li><button id="btn-game-gun-tower"><img src="assets/textures/turrets/turret-1-1.png"/>&nbsp10</button></li>
+            <li><button id="btn-game-laser-tower"><img src="assets/textures/turrets/turret-5-1.png">&nbsp30</button></li>
+            <li><button id="btn-game-slug-tower"><img src="assets/textures/turrets/turret-7-1.png"/>&nbsp40</button></li>
+            <li><button id="btn-game-blast-tower"><img src="assets/textures/turrets/turret-3-1.png"/>&nbsp80</button></li>
+            <li><button id="btn-game-show-grid">Toggle Grid</button></li>
         </ul>
         <canvas id="game-canvas" width="500" height="500"></canvas>
         <ul id="tower-info">
@@ -75,6 +77,7 @@
 <script src="scripts/projectile.js"></script>
 <script src="scripts/tower.js"></script>
 <script src="scripts/controller.js"></script>
+<script src="scripts/floatingScore.js"></script>
 <script src="scripts/game.js"></script>
 <script src="scripts/level.js"></script>
 <script src="scripts/actor.js"></script>

@@ -5,14 +5,17 @@
      let that = {
          mousePos: {x: 0, y:0},
          heldTower: null,
-         cash: 50,
+         cash: 100,
          lives: 15,
+         score: 0,
          selected: null
      };
+
      let gridSize = App.management.canvas.width/nGridCells;
 
      let livesDisp = document.getElementById('game-lives');
      let cashDisp = document.getElementById('game-cash');
+     let scoreDisp = document.getElementById('game-score');
 
      let towerInfoDisp = {
          type: document.getElementById('game-tower-type'),
@@ -23,7 +26,7 @@
      };
 
      that.newGame = function(){
-         that.cash = 50;
+         that.cash = 100;
          that.lives = 15;
          that.selected = null;
          that.heldTower = null;
@@ -35,9 +38,12 @@
 
      that.sellTower = function(){
          let t = that.selected;
-         App.board.deleteTower(t);
-         that.cash += Math.floor(0.8*t.price);
-         that.selected = null;
+         if(t.active) {
+             App.board.deleteTower(t);
+             that.cash += Math.floor(0.8 * t.price);
+             emitter(sellSpec(t.pos, t.price));
+             that.selected = null;
+         }
      };
 
      that.upgradeTower = function(){
@@ -80,8 +86,9 @@
         }
         livesDisp.innerHTML = '<3: ' + that.lives;
         cashDisp.innerHTML = '$: ' + that.cash;
+        scoreDisp.innerHTML = 'Score: ' + that.score;
 
-        if(that.selected) {
+        if(that.selected){
             that.selected.showRange();
             towerInfoDisp.type.innerHTML = that.selected.type;
             towerInfoDisp.damage.innerHTML = 'Damage: ' + Math.floor(that.selected.damage);
@@ -111,3 +118,19 @@
 
      return that;
  }(App.graphics, App.settings.nGridCells, App.board, App.management.snapToBlock));
+
+let sellSpec = function(pos, density) {
+    return {
+        anchor: null,
+        lifetime: 50,
+        density: density,
+        pos: pos,
+        shape: {width: 15, height: 15},
+        speed: {mean: .04, sd: .01},
+        accel: {mean: 0.9, sd: 0},
+        size: {mean: 10, sd: 2},
+        particleLifetime: {mean: 600, sd: 100},
+        fill: 'rgba(255, 0, 0, .5)',
+        texture: 'assets/textures/cash.png'
+    }
+};
